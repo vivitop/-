@@ -1,63 +1,220 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Crypto Bot Web App</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Биржевой сайт</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* Общие стили */
         body {
-            font-family: sans-serif;
-            margin: 20px;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; /* Светло-серый фон */
+            color: #343a40; /* Темно-серый текст */
+            line-height: 1.6;
         }
-        button {
+
+        a {
+            color: #007bff; /* Синий цвет ссылок */
+            text-decoration: none;
+            transition: color 0.3s ease; /* Плавный переход цвета */
+        }
+
+        a:hover {
+            color: #0056b3; /* Более темный синий при наведении */
+        }
+
+        /* Шапка сайта */
+        header {
+            background-color: #ffffff; /* Белый фон шапки */
+            color: #212529; /* Черный текст шапки */
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для шапки */
+            position: relative; /* Для позиционирования элемента logo-image */
+        }
+
+        .logo-image {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px; /* Adjust the width as needed */
+            height: auto;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 500;
+        }
+
+        /* Навигация */
+        nav {
+            background-color: #343a40; /* Темно-серый фон навигации */
+            color: #ffffff; /* Белый текст навигации */
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Разделитель под навигацией */
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
             padding: 10px 20px;
-            background-color: #0088cc;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
+            display: inline-block;
+            border-radius: 5px; /* Закругленные углы для кнопок навигации */
+            transition: background-color 0.3s ease; /* Плавный переход фона */
         }
-        #balance {
+
+        nav a:hover {
+            background-color: #495057; /* Более светлый темно-серый при наведении */
+        }
+
+        /* Основное содержимое */
+        main {
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+
+        /* Таблица */
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
-            font-weight: bold;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Скрыть вылезающие элементы за границами */
+        }
+
+        th, td {
+            border: 1px solid #dee2e6; /* Светло-серые границы */
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #e9ecef; /* Светло-серый фон заголовков */
+            font-weight: 500;
+            text-transform: uppercase; /* Заголовки в верхнем регистре */
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2; /* Чередование фона строк */
+        }
+
+        /* Новости */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        /* Подвал сайта */
+        footer {
+            background-color: #343a40;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Дополнительные стили для мобильных устройств */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            nav a {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            table {
+                overflow-x: auto; /* Добавить горизонтальную прокрутку для таблиц на мобильных устройствах */
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Crypto Bot Web App</h1>
-    <p>Welcome to the web app! You can access your wallet and perform actions here.</p>
 
-    <button onclick="getBalance()">Get Balance</button>
-    <button onclick="openBuyTrax()">Buy TRH</button>
-    <button onclick="openWithdraw()">Withdraw</button>
+    <header>
+        <img src="your-logo.png" alt="Логотип биржи" class="logo-image">
+        <h1>Биржевой сайт</h1>
+    </header>
 
-    <div id="balance"></div>
+    <nav>
+        <a href="#">Главная</a>
+        <a href="#">Акции</a>
+        <a href="#">Новости</a>
+        <a href="#">Портфель</a>
+        <a href="#">Аналитика</a>
+    </nav>
 
-    <script>
-        // Initialize Telegram Web App
-        Telegram.WebApp.ready();
+    <main>
+        <h2>Обзор акций</h2>
 
-        function getBalance() {
-            // Здесь нужно реализовать получение баланса.
-            // В реальном приложении вы бы отправляли запрос на ваш сервер,
-            // который бы взаимодействовал с кодом вашего бота.
-            // Для примера:
-            document.getElementById('balance').innerText = "Баланс: (Нужно реализовать получение с сервера)";
-        }
-
-        function openBuyTrax() {
-            // Открывает функцию покупки TRH через callback
-            Telegram.WebApp.close(); // Закрываем WebApp
-            Telegram.WebApp.sendData("buy_trax"); // Отправляем данные боту для выполнения коллбэка
-        }
-
-        function openWithdraw() {
-            // Открывает функцию вывода средств через callback
-            Telegram.WebApp.close(); // Закрываем WebApp
-            Telegram.WebApp.sendData("withdraw_crypto"); // Отправляем данные боту для выполнения коллбэка
-        }
-
-        // set main background color
-        Telegram.WebApp.setBackgroundColor("#222");
-    </script>
-</body>
-</html>
+        <table>
+            <thead>
+                <tr>
+                    <th>Тикер</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Изменение</th>
+                    <th>Объем</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>AAPL</td>
+                    <td>Apple Inc.</td>
+                    <td>170.34</td>
+                    <td>+0.50</td>
+                    <td>1234567</td>
+                </tr>
+                <tr>
+                    <td>GOOG</td>
+                    <td>Alphabet Inc.</td>
+                    <td>2500.00</td>
+                    <td>-10.00</td>
+                    <td>890123</td>
+                </tr>
+                <tr>
+                    <td>MSFT</td>
+                    <td>Microsoft Corp.</td>
+                    <td>300.00</td>
+                    <td>+2.00</td>
+                    <td>567890</td>
+                </tr>
+                <tr>
+                    <td>TSLA</td>
+                    <td>Tesla, Inc.</td>
+                    <td>800.00</td>
+                    <td>+5.00</td>
+                    <td>2345678</td>
+                </tr>
+                <!-- Добавьте больше строк с данными акций --
