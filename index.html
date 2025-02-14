@@ -1,220 +1,285 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Биржевой сайт</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* Общие стили */
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa; /* Светло-серый фон */
-            color: #343a40; /* Темно-серый текст */
-            line-height: 1.6;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAKTRAHHER228 - Твой источник мемов!</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Добавьте иконку сайта -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
+  <style>
+    /* Общие стили */
+    body {
+      font-family: 'Comic Neue', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
 
-        a {
-            color: #007bff; /* Синий цвет ссылок */
-            text-decoration: none;
-            transition: color 0.3s ease; /* Плавный переход цвета */
-        }
+    h1, h2, h3 {
+        font-family: 'Luckiest Guy', cursive;
+    }
 
-        a:hover {
-            color: #0056b3; /* Более темный синий при наведении */
-        }
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
 
-        /* Шапка сайта */
-        header {
-            background-color: #ffffff; /* Белый фон шапки */
-            color: #212529; /* Черный текст шапки */
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для шапки */
-            position: relative; /* Для позиционирования элемента logo-image */
-        }
+    a:hover {
+      text-decoration: underline;
+    }
 
-        .logo-image {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 50px; /* Adjust the width as needed */
-            height: auto;
-        }
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 5px;
+      text-decoration: none;
+    }
 
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            font-weight: 500;
-        }
+    .button:hover {
+      background-color: #0056b3;
+      text-decoration: none;
+    }
 
-        /* Навигация */
-        nav {
-            background-color: #343a40; /* Темно-серый фон навигации */
-            color: #ffffff; /* Белый текст навигации */
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Разделитель под навигацией */
-        }
+    /* Шапка сайта */
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        nav a {
-            color: #ffffff;
-            text-decoration: none;
-            padding: 10px 20px;
-            display: inline-block;
-            border-radius: 5px; /* Закругленные углы для кнопок навигации */
-            transition: background-color 0.3s ease; /* Плавный переход фона */
-        }
+    .logo {
+      display: flex;
+      align-items: center;
+      margin-left: 20px;
+    }
 
-        nav a:hover {
-            background-color: #495057; /* Более светлый темно-серый при наведении */
-        }
+    .logo img {
+      width: 50px;
+      margin-right: 10px;
+    }
 
-        /* Основное содержимое */
-        main {
-            padding: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+    header h1 {
+      margin: 0;
+      font-size: 1.5em;
+    }
 
-        h2 {
-            font-size: 2rem;
-            font-weight: 400;
-            margin-bottom: 20px;
-            color: #343a40;
-        }
+    nav {
+      margin-right: 20px;
+    }
 
-        /* Таблица */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            overflow: hidden; /* Скрыть вылезающие элементы за границами */
-        }
+    nav a {
+      color: #fff;
+      margin-left: 20px;
+    }
 
-        th, td {
-            border: 1px solid #dee2e6; /* Светло-серые границы */
-            padding: 12px 15px;
-            text-align: left;
-        }
+    /* Секция Hero */
+    #hero {
+      background-color: #e9ecef;
+      padding: 50px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        th {
-            background-color: #e9ecef; /* Светло-серый фон заголовков */
-            font-weight: 500;
-            text-transform: uppercase; /* Заголовки в верхнем регистре */
-        }
+    .hero-content {
+      text-align: center;
+      max-width: 600px;
+      margin-right: 20px;
+    }
 
-        tbody tr:nth-child(even) {
-            background-color: #f2f2f2; /* Чередование фона строк */
-        }
+    .hero-image img {
+      width: 300px;
+      border-radius: 10px;
+    }
 
-        /* Новости */
-        ul {
-            list-style: none;
-            padding: 0;
-            margin-top: 20px;
-        }
+    /* Секция "О канале" */
+    #about {
+      padding: 50px 20px;
+      text-align: center;
+    }
 
-        li {
-            padding: 10px;
-            border-bottom: 1px solid #dee2e6;
-        }
+    #about ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
 
-        li:last-child {
-            border-bottom: none;
-        }
+    #about li {
+      margin-bottom: 10px;
+    }
 
-        /* Подвал сайта */
-        footer {
-            background-color: #343a40;
-            color: #ffffff;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    /* Секция "Последние посты" */
+    #latest-posts {
+      padding: 50px 20px;
+      background-color: #fff;
+    }
 
-        /* Дополнительные стили для мобильных устройств */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
-            }
+    #latest-posts h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-            nav a {
-                display: block;
-                margin-bottom: 10px;
-            }
+    .post-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
 
-            table {
-                overflow-x: auto; /* Добавить горизонтальную прокрутку для таблиц на мобильных устройствах */
-            }
-        }
-    </style>
+    .post {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      transition: transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    }
+
+    .post:hover {
+        transform: scale(1.05);
+        border-color: #007bff;
+    }
+
+    .post img {
+      width: 100%;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .post h3 {
+      margin-top: 0;
+      font-size: 1.2em;
+    }
+
+    /* Секция "Связь с автором" */
+    #contact {
+      padding: 50px 20px;
+      text-align: center;
+      background-color: #e9ecef;
+    }
+
+    /* Подвал */
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav {
+        margin-top: 10px;
+        margin-right: 0;
+      }
+
+      nav a {
+        margin-left: 10px;
+      }
+
+      #hero {
+        flex-direction: column;
+      }
+
+      .hero-content {
+        margin-right: 0;
+      }
+
+      .hero-image img {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <img src="your-logo.png" alt="Логотип биржи" class="logo-image">
-        <h1>Биржевой сайт</h1>
-    </header>
-
+  <header>
+    <div class="logo">
+      <img src="logo.png" alt="Логотип канала"> <!-- Замените на свой логотип -->
+      <h1>MAKTRAHHER228</h1>
+    </div>
     <nav>
-        <a href="#">Главная</a>
-        <a href="#">Акции</a>
-        <a href="#">Новости</a>
-        <a href="#">Портфель</a>
-        <a href="#">Аналитика</a>
+      <a href="#about">О канале</a>
+      <a href="#latest-posts">Последние посты</a>
+      <a href="#contact">Связь с автором</a>
     </nav>
+  </header>
 
-    <main>
-        <h2>Обзор акций</h2>
+  <section id="hero">
+    <div class="hero-content">
+      <h2>Добро пожаловать в мир отборных мемов!</h2>
+      <p>Здесь вы найдете самые свежие и смешные мемы, приколы и юмор на любой вкус. Подписывайтесь, чтобы не пропустить ни одного шедевра!</p>
+      <a href="https://t.me/maktrahher228" class="button" target="_blank">Перейти в Telegram-канал</a>
+    </div>
+    <div class="hero-image">
+      <img src="hero-image.jpg" alt="Прикольная картинка"> <!-- Замените на свою картинку -->
+    </div>
+  </section>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Тикер</th>
-                    <th>Название</th>
-                    <th>Цена</th>
-                    <th>Изменение</th>
-                    <th>Объем</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>AAPL</td>
-                    <td>Apple Inc.</td>
-                    <td>170.34</td>
-                    <td>+0.50</td>
-                    <td>1234567</td>
-                </tr>
-                <tr>
-                    <td>GOOG</td>
-                    <td>Alphabet Inc.</td>
-                    <td>2500.00</td>
-                    <td>-10.00</td>
-                    <td>890123</td>
-                </tr>
-                <tr>
-                    <td>MSFT</td>
-                    <td>Microsoft Corp.</td>
-                    <td>300.00</td>
-                    <td>+2.00</td>
-                    <td>567890</td>
-                </tr>
-                <tr>
-                    <td>TSLA</td>
-                    <td>Tesla, Inc.</td>
-                    <td>800.00</td>
-                    <td>+5.00</td>
-                    <td>2345678</td>
-                </tr>
-                <!-- Добавьте больше строк с данными акций --
+  <section id="about">
+    <h2>О канале</h2>
+    <p>Канал MAKTRAHHER228 создан для тех, кто любит посмеяться от души.  Мы собираем лучшие мемы со всего интернета и делимся ими с вами.  Здесь вы найдете юмор на злобу дня, классические приколы и авторские мемы.  Присоединяйтесь к нашему сообществу любителей хорошего настроения!</p>
+    <p><strong>Почему стоит подписаться?</strong></p>
+    <ul>
+      <li>Ежедневные обновления мемов</li>
+      <li>Отборный юмор без баянов</li>
+      <li>Дружелюбное сообщество</li>
+      <li>Возможность предложить свой мем</li>
+    </ul>
+  </section>
+
+  <section id="latest-posts">
+    <h2>Последние посты</h2>
+    <div class="post-grid">
+
+      <!-- Пример поста 1 -->
+      <div class="post">
+        <img src="post1.jpg" alt="Превью поста 1"> <!-- Замените на картинку превью -->
+        <h3>Заголовок поста 1: Смешной случай из жизни</h3>
+        <p>Краткое описание поста.  Например:  Когда забыл выключить микрофон на онлайн-совещании...</p>
+        <a href="https://t.me/maktrahher228/123" class="button" target="_blank">Смотреть в Telegram</a>
+      </div>
+
+      <!-- Пример поста 2 -->
+      <div class="post">
+        <img src="post2.jpg" alt="Превью поста 2"> <!-- Замените на картинку превью -->
+        <h3>Заголовок поста 2: Мем дня</h3>
+        <p>Краткое описание поста. Например:  Новый мем про котиков, который покорил интернет!</p>
+        <a href="https://t.me/maktrahher228/124" class="button" target="_blank">Смотреть в Telegram</a>
+      </div>
+
+      <!-- Добавьте больше постов по аналогии -->
+      <!-- Пример поста 3 -->
+      <div class="post">
+        <img src="post3.jpg" alt="Превью поста 3"> <!-- Замените на картинку превью -->
+        <h3>Заголовок поста 3:  Юмор про программистов</h3>
+        <p>Краткое описание поста. Например:  Когда пытаешься отладить код после бессонной ночи...</p>
+        <a href="https://t.me/maktrahher228/125" class="button" target="_blank">Смотреть в Telegram</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Связаться с автором</h2>
+    <p>По вопросам сотрудничества, рекламы и предложений пишите: <a href="mailto:your_email@example.com">your_email@example.com</a></p> <!-- Замените на свою почту -->
+    <p>Подписывайтесь на мой Telegram: <a href="https://t.me/maktrahher228" target="_blank">@maktrahher228</a></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2023 MAKTRAHHER228. Все права защищены.</p>
+    <p>Сделано с любовью и юмором.</p>
+  </footer>
+
+</body>
+</html>
