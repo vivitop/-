@@ -1,78 +1,125 @@
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-
-public class TelegramWalletBot extends TelegramLongPollingBot {
-
-    private String botToken = "7277092887:AAEQJv0CkoC2AaRowQbCi_YrKIlEjCVmv18"; // Замените на ваш токен
-    private String botUsername = "Trahkoin_bot"; // Замените на имя вашего бота
-
-    private double trhBalance = 0;  // Баланс TRH (очень простое хранение!)
-    private double cpsBalance = 0;  // Баланс CPS (очень простое хранение!)
-
-    @Override
-    public String getBotUsername() {
-        return botUsername;
-    }
-
-    @Override
-    public String getBotToken() {
-        return botToken;
-    }
-
-
-    @Override
-    public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            String messageText = update.getMessage().getText();
-            long chatId = update.getMessage().getChatId();
-
-            if (messageText.equals("/start")) {
-                sendMessage(chatId, "Привет! Ваш баланс: TRH " + trhBalance + ", CPS " + cpsBalance);
-            } else if (messageText.startsWith("/buytrh ")) {
-                try {
-                    double amount = Double.parseDouble(messageText.substring("/buytrh ".length()));
-                    trhBalance += amount;
-                    sendMessage(chatId, "Вы купили " + amount + " TRH. Новый баланс: " + trhBalance);
-                } catch (NumberFormatException e) {
-                    sendMessage(chatId, "Неверный формат суммы.");
-                }
-            } else if (messageText.startsWith("/sendtrh ")) {
-                  sendMessage(chatId, "Функция отправки пока не реализована.");
-            }else if (messageText.startsWith("/exchangetrhcps ")) {
-                try {
-                    double amount = Double.parseDouble(messageText.substring("/exchangetrhcps ".length()));
-                    if (trhBalance >= amount) {
-                        trhBalance -= amount;
-                        cpsBalance += amount;
-                        sendMessage(chatId, "Вы обменяли " + amount + " TRH на " + amount + " CPS. Новый баланс TRH: " + trhBalance + ", CPS: " + cpsBalance);
-                    } else {
-                        sendMessage(chatId, "Недостаточно TRH.");
-                    }
-                } catch (NumberFormatException e) {
-                    sendMessage(chatId, "Неверный формат суммы.");
-                }
-            }else {
-                sendMessage(chatId, "Неизвестная команда.");
-            }
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Криптообменник</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background-color: #f8f9fa;
         }
-    }
-
-    private void sendMessage(long chatId, String text) {
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatId));
-        message.setText(text);
-        try {
-            execute(message);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Криптообменник</h1>
+
+    <div class="form-group">
+        <label for="action">Выберите действие:</label>
+        <select class="form-control" id="action">
+            <option value="exchange">Обмен валюты</option>
+            <option value="send">Отправить валюту</option>
+        </select>
+    </div>
+
+    <div id="exchangeForm" style="display: none;">
+        <h2>Обмен валюты</h2>
+        <div class="form-group">
+            <label for="fromCurrency">Из валюты:</label>
+            <select class="form-control" id="fromCurrency">
+                <option value="TRH">TRH</option>
+                <option value="CPS">CPS</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="toCurrency">В валюту:</label>
+            <select class="form-control" id="toCurrency">
+                <option value="CPS">CPS</option>
+                <option value="TRH">TRH</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exchangeAmount">Сумма:</label>
+            <input type="number" class="form-control" id="exchangeAmount" placeholder="Сумма для обмена">
+        </div>
+        <button class="btn btn-primary" onclick="sendExchangeData()">Обменять</button>
+    </div>
+
+    <div id="sendForm" style="display: none;">
+        <h2>Отправить валюту</h2>
+        <div class="form-group">
+            <label for="sendCurrency">Валюта:</label>
+            <select class="form-control" id="sendCurrency">
+                <option value="TRH">TRH</option>
+                <option value="CPS">CPS</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="recipient">Получатель (адрес):</label>
+            <input type="text" class="form-control" id="recipient" placeholder="Адрес получателя">
+        </div>
+        <div class="form-group">
+            <label for="sendAmount">Сумма:</label>
+            <input type="number" class="form-control" id="sendAmount" placeholder="Сумма для отправки">
+        </div>
+        <button class="btn btn-primary" onclick="sendTransferData()">Отправить</button>
+    </div>
+</div>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand(); // Optional: Expand the Web App to full screen
+
+    document.getElementById('action').addEventListener('change', function() {
+        const action = this.value;
+        document.getElementById('exchangeForm').style.display = action === 'exchange' ? 'block' : 'none';
+        document.getElementById('sendForm').style.display = action === 'send' ? 'block' : 'none';
+    });
+
+    function sendExchangeData() {
+        const fromCurrency = document.getElementById('fromCurrency').value;
+        const toCurrency = document.getElementById('toCurrency').value;
+        const amount = document.getElementById('exchangeAmount').value;
+
+        const data = {
+            action: 'exchange',
+            fromCurrency: fromCurrency,
+            toCurrency: toCurrency,
+            amount: amount
+        };
+        tg.sendData(JSON.stringify(data));
     }
 
-    public static void main(String[] args) {
-        // В этом примере нет полноценного запуска бота, т.к. он не интегрирован с Spring Boot и requires a framework to run
-        System.out.println("Simple Telegram Bot running (extremely limited functionality).");
+    function sendTransferData() {
+        const currency = document.getElementById('sendCurrency').value;
+        const recipient = document.getElementById('recipient').value;
+        const amount = document.getElementById('sendAmount').value;
+
+        const data = {
+            action: 'send',
+            currency: currency,
+            recipient: recipient,
+            amount: amount
+        };
+        tg.sendData(JSON.stringify(data));
     }
-}
+</script>
+
+</body>
+</html>
