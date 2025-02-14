@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAKTRAHHER228 - Твой источник мемов!</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Добавьте иконку сайта -->
+  <title>MAKTRAHHER228 - Ночной приют для мемов!</title>
+  <link rel="icon" href="https://disk.yandex.ru/i/LNLHlbVasAQPhg" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
@@ -14,45 +14,54 @@
       font-family: 'Comic Neue', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f4f4;
-      color: #333;
+      background-color: #1e1e2e; /* Темно-фиолетовый фон */
+      color: #eee; /* Светло-серый текст */
+      transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход для темы */
     }
 
     h1, h2, h3 {
         font-family: 'Luckiest Guy', cursive;
+        color: #f0f; /* Ярко-фиолетовый для заголовков */
+        text-shadow: 1px 1px 2px #000; /* Тень для большей выразительности */
     }
 
     a {
-      color: #007bff;
+      color: #a0f; /* Фиолетовый для ссылок */
       text-decoration: none;
+      transition: color 0.3s ease; /* Плавный переход для цвета ссылок */
     }
 
     a:hover {
       text-decoration: underline;
+      color: #c0f; /* Более светлый фиолетовый при наведении */
     }
 
     .button {
       display: inline-block;
       padding: 10px 20px;
-      background-color: #007bff;
+      background-color: #604080; /* Темный фиолетовый для кнопок */
       color: #fff;
       border-radius: 5px;
       text-decoration: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Тень для кнопок */
+      transition: background-color 0.3s ease, transform 0.2s ease; /* Плавный переход для цвета и трансформации */
     }
 
     .button:hover {
-      background-color: #0056b3;
+      background-color: #8060a0; /* Более светлый фиолетовый при наведении */
       text-decoration: none;
+      transform: translateY(-2px); /* Небольшой подъем при наведении */
     }
 
     /* Шапка сайта */
     header {
-      background-color: #333;
-      color: #fff;
+      background-color: #10101a; /* Еще темнее для шапки */
+      color: #eee;
       padding: 10px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-bottom: 1px solid #503070; /* Фиолетовая граница снизу */
     }
 
     .logo {
@@ -64,6 +73,8 @@
     .logo img {
       width: 50px;
       margin-right: 10px;
+      border-radius: 50%; /* Круглый логотип */
+      box-shadow: 0 0 10px #f0f; /* Фиолетовое свечение вокруг логотипа */
     }
 
     header h1 {
@@ -76,34 +87,52 @@
     }
 
     nav a {
-      color: #fff;
+      color: #a0f;
       margin-left: 20px;
     }
 
     /* Секция Hero */
     #hero {
-      background-color: #e9ecef;
+      background: linear-gradient(to bottom, #201030, #1e1e2e); /* Градиентный фон */
       padding: 50px 0;
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden; /* Скрываем выходящие элементы */
     }
 
     .hero-content {
       text-align: center;
       max-width: 600px;
       margin-right: 20px;
+      animation: fadeIn 1s ease-in-out; /* Плавное появление контента */
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .hero-image img {
       width: 300px;
       border-radius: 10px;
+      box-shadow: 0 0 20px #503070; /* Фиолетовая тень вокруг картинки */
+      animation: rotate 5s linear infinite; /* Бесконечное вращение */
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
     /* Секция "О канале" */
     #about {
       padding: 50px 20px;
       text-align: center;
+      background-color: rgba(80, 48, 112, 0.3); /* Полупрозрачный фиолетовый фон */
+      border-radius: 10px;
+      margin: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Тень */
     }
 
     #about ul {
@@ -114,12 +143,22 @@
 
     #about li {
       margin-bottom: 10px;
+      position: relative; /* Для псевдоэлемента */
+      padding-left: 25px; /* Отступ для иконки */
+    }
+
+    #about li::before {
+      content: '🌌'; /* Космическая иконка */
+      position: absolute;
+      left: 0;
+      top: 0;
     }
 
     /* Секция "Последние посты" */
     #latest-posts {
       padding: 50px 20px;
-      background-color: #fff;
+      background-color: #181828; /* Немного светлее фон */
+      border-top: 1px solid #503070; /* Фиолетовая граница сверху */
     }
 
     #latest-posts h2 {
@@ -134,21 +173,51 @@
     }
 
     .post {
-      border: 1px solid #ddd;
+      background-color: #282838; /* Темный фон для поста */
+      border: 1px solid #503070; /* Фиолетовая граница */
       border-radius: 5px;
       padding: 15px;
-      transition: transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
+      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Плавный переход */
+      overflow: hidden; /* Обрезаем контент, выходящий за рамки */
+      position: relative; /* Для эффекта свечения */
     }
 
     .post:hover {
-        transform: scale(1.05);
-        border-color: #007bff;
+      transform: translateY(-5px); /* Поднимаем пост при наведении */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Более сильная тень при наведении */
     }
+
+     .post::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, #f0f, transparent); /* Фиолетовый градиент */
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 0;
+      }
+
+      .post:hover::before {
+        opacity: 0.3; /* Показываем градиент при наведении */
+      }
+
+      .post > * {
+        position: relative;
+        z-index: 1;  /*Контент поверх псевдоэлемента */
+      }
 
     .post img {
       width: 100%;
       border-radius: 5px;
       margin-bottom: 10px;
+      transition: transform 0.5s ease; /*  Трансформация картинки */
+    }
+
+    .post:hover img {
+      transform: scale(1.1); /* Увеличиваем картинку при наведении */
     }
 
     .post h3 {
@@ -160,15 +229,174 @@
     #contact {
       padding: 50px 20px;
       text-align: center;
-      background-color: #e9ecef;
+      background-color: #10101a; /
+      box-shadow: 0 0 10px #f0f; /* Фиолетовое свечение вокруг логотипа */
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+
+    nav {
+      margin-right: 20px;
+    }
+
+    nav a {
+      color: #a0f;
+      margin-left: 20px;
+    }
+
+    /* Секция Hero */
+    #hero {
+      background: linear-gradient(to bottom, #201030, #1e1e2e); /* Градиентный фон */
+      padding: 50px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden; /* Скрываем выходящие элементы */
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 600px;
+      margin-right: 20px;
+      animation: fadeIn 1s ease-in-out; /* Плавное появление контента */
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-image img {
+      width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #503070; /* Фиолетовая тень вокруг картинки */
+      animation: rotate 5s linear infinite; /* Бесконечное вращение */
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Секция "О канале" */
+    #about {
+      padding: 50px 20px;
+      text-align: center;
+      background-color: rgba(80, 48, 112, 0.3); /* Полупрозрачный фиолетовый фон */
+      border-radius: 10px;
+      margin: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Тень */
+    }
+
+    #about ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    #about li {
+      margin-bottom: 10px;
+      position: relative; /* Для псевдоэлемента */
+      padding-left: 25px; /* Отступ для иконки */
+    }
+
+    #about li::before {
+      content: '🌌'; /* Космическая иконка */
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    /* Секция "Последние посты" */
+    #latest-posts {
+      padding: 50px 20px;
+      background-color: #181828; /* Немного светлее фон */
+      border-top: 1px solid #503070; /* Фиолетовая граница сверху */
+    }
+
+    #latest-posts h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .post-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .post {
+      background-color: #282838; /* Темный фон для поста */
+      border: 1px solid #503070; /* Фиолетовая граница */
+      border-radius: 5px;
+      padding: 15px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Плавный переход */
+      overflow: hidden; /* Обрезаем контент, выходящий за рамки */
+      position: relative; /* Для эффекта свечения */
+    }
+
+    .post:hover {
+      transform: translateY(-5px); /* Поднимаем пост при наведении */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Более сильная тень при наведении */
+    }
+
+     .post::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, #f0f, transparent); /* Фиолетовый градиент */
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 0;
+      }
+
+      .post:hover::before {
+        opacity: 0.3; /* Показываем градиент при наведении */
+      }
+
+      .post > * {
+        position: relative;
+        z-index: 1;  /*Контент поверх псевдоэлемента */
+      }
+
+    .post img {
+      width: 100%;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      transition: transform 0.5s ease; /*  Трансформация картинки */
+    }
+
+    .post:hover img {
+      transform: scale(1.1); /* Увеличиваем картинку при наведении */
+    }
+
+    .post h3 {
+      margin-top: 0;
+      font-size: 1.2em;
+    }
+
+    /* Секция "Связь с автором" */
+    #contact {
+      padding: 50px 20px;
+      text-align: center;
+      background-color: #10101a; /* Темный фон */
+      border-top: 1px solid #503070; /* Фиолетовая граница */
     }
 
     /* Подвал */
     footer {
-      background-color: #333;
-      color: #fff;
+      background-color: #080818; /* Еще темнее для подвала */
+      color: #eee;
       text-align: center;
       padding: 20px 0;
+      font-size: 0.8em;
+      border-top: 1px solid #503070; /* Фиолетовая граница */
     }
 
     /* Адаптивность */
@@ -217,9 +445,9 @@
 
   <section id="hero">
     <div class="hero-content">
-      <h2>Добро пожаловать в мир отборных мемов!</h2>
-      <p>Здесь вы найдете самые свежие и смешные мемы, приколы и юмор на любой вкус. Подписывайтесь, чтобы не пропустить ни одного шедевра!</p>
-      <a href="https://t.me/maktrahher228" class="button" target="_blank">Перейти в Telegram-канал</a>
+      <h2>Добро пожаловать в ночной приют для мемов!</h2>
+      <p>Здесь темно, уютно и полно отборного юмора. Подписывайтесь, если не боитесь смеяться в темноте!</p>
+      <a href="https://t.me/maktrahher228" class="button" target="_blank">Заглянуть в бездну Telegram</a>
     </div>
     <div class="hero-image">
       <img src="hero-image.jpg" alt="Прикольная картинка"> <!-- Замените на свою картинку -->
@@ -228,57 +456,56 @@
 
   <section id="about">
     <h2>О канале</h2>
-    <p>Канал MAKTRAHHER228 создан для тех, кто любит посмеяться от души.  Мы собираем лучшие мемы со всего интернета и делимся ими с вами.  Здесь вы найдете юмор на злобу дня, классические приколы и авторские мемы.  Присоединяйтесь к нашему сообществу любителей хорошего настроения!</p>
+    <p>Канал MAKTRAHHER228 – это место, где мемы оживают ночью. Мы ищем самые темные и смешные уголки интернета, чтобы принести вам порцию ночного юмора. Готовьтесь смеяться до рассвета!</p>
     <p><strong>Почему стоит подписаться?</strong></p>
     <ul>
-      <li>Ежедневные обновления мемов</li>
-      <li>Отборный юмор без баянов</li>
-      <li>Дружелюбное сообщество</li>
-      <li>Возможность предложить свой мем</li>
+      <li>Ночные обновления мемов</li>
+      <li>Юмор, который не заснет</li>
+      <li>Сообщество ночных смехотерапевтов</li>
+      <li>Возможность поделиться своим ночным безумием</li>
     </ul>
   </section>
 
   <section id="latest-posts">
-    <h2>Последние посты</h2>
+    <h2>Последние мемы из тени</h2>
     <div class="post-grid">
 
       <!-- Пример поста 1 -->
       <div class="post">
-        <img src="post1.jpg" alt="Превью поста 1"> <!-- Замените на картинку превью -->
-        <h3>Заголовок поста 1: Смешной случай из жизни</h3>
-        <p>Краткое описание поста.  Например:  Когда забыл выключить микрофон на онлайн-совещании...</p>
-        <a href="https://t.me/maktrahher228/123" class="button" target="_blank">Смотреть в Telegram</a>
+        <img src="https://disk.yandex.ru/i/IX5CvbYfm3Kycw" alt="Мем 1">
+        <h3>Мем 1: Когда забыл выключить темную тему</h3>
+        <p>Описание: Когда забыл выключить темную тему и пытаешься посмотреть на мир...</p>
+        <a href="https://t.me/maktrahher228/123" class="button" target="_blank">Увидеть в Telegram</a>
       </div>
 
       <!-- Пример поста 2 -->
       <div class="post">
-        <img src="post2.jpg" alt="Превью поста 2"> <!-- Замените на картинку превью -->
-        <h3>Заголовок поста 2: Мем дня</h3>
-        <p>Краткое описание поста. Например:  Новый мем про котиков, который покорил интернет!</p>
-        <a href="https://t.me/maktrahher228/124" class="button" target="_blank">Смотреть в Telegram</a>
+        <img src="https://disk.yandex.ru/i/xIiJUS5o_nlQBw" alt="Мем 2">
+        <h3>Мем 2: Прокрастинация в ночи</h3>
+        <p>Описание: Когда пытаешься уснуть, но мозг решил вспомнить все свои грехи...</p>
+        <a href="https://t.me/maktrahher228/124" class="button" target="_blank">Увидеть в Telegram</a>
       </div>
 
-      <!-- Добавьте больше постов по аналогии -->
       <!-- Пример поста 3 -->
       <div class="post">
-        <img src="post3.jpg" alt="Превью поста 3"> <!-- Замените на картинку превью -->
-        <h3>Заголовок поста 3:  Юмор про программистов</h3>
-        <p>Краткое описание поста. Например:  Когда пытаешься отладить код после бессонной ночи...</p>
-        <a href="https://t.me/maktrahher228/125" class="button" target="_blank">Смотреть в Telegram</a>
+        <img src="https://disk.yandex.ru/i/aYfH9IQ-EqJSLg" alt="Мем 3">
+        <h3>Мем 3: Ночной программист</h3>
+        <p>Описание: Когда пытаешься отладить код в 3 часа ночи и все кажется логичным...</p>
+        <a href="https://t.me/maktrahher228/125" class="button" target="_blank">Увидеть в Telegram</a>
       </div>
 
     </div>
   </section>
 
   <section id="contact">
-    <h2>Связаться с автором</h2>
-    <p>По вопросам сотрудничества, рекламы и предложений пишите: <a href="mailto:your_email@example.com">your_email@example.com</a></p> <!-- Замените на свою почту -->
+    <h2>Связаться с ночным хранителем мемов</h2>
+    <p>По вопросам ночных сговоров, рекламы и предложений пишите: <a href="mailto:your_email@example.com">your_email@example.com</a></p>
     <p>Подписывайтесь на мой Telegram: <a href="https://t.me/maktrahher228" target="_blank">@maktrahher228</a></p>
   </section>
 
   <footer>
     <p>&copy; 2023 MAKTRAHHER228. Все права защищены.</p>
-    <p>Сделано с любовью и юмором.</p>
+    <p>Сделано с любовью и тьмой.</p>
   </footer>
 
 </body>
