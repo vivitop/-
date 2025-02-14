@@ -1,125 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Криптообменник</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Crypto Bot Web App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
             font-family: sans-serif;
-            padding: 20px;
-            background-color: #f8f9fa;
+            margin: 20px;
         }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        button {
+            padding: 10px 20px;
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
         }
-        .form-group {
-            margin-bottom: 15px;
+        #balance {
+            margin-top: 20px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
+    <h1>Crypto Bot Web App</h1>
+    <p>Welcome to the web app! You can access your wallet and perform actions here.</p>
 
-<div class="container">
-    <h1>Криптообменник</h1>
+    <button onclick="getBalance()">Get Balance</button>
+    <button onclick="openBuyTrax()">Buy TRH</button>
+    <button onclick="openWithdraw()">Withdraw</button>
 
-    <div class="form-group">
-        <label for="action">Выберите действие:</label>
-        <select class="form-control" id="action">
-            <option value="exchange">Обмен валюты</option>
-            <option value="send">Отправить валюту</option>
-        </select>
-    </div>
+    <div id="balance"></div>
 
-    <div id="exchangeForm" style="display: none;">
-        <h2>Обмен валюты</h2>
-        <div class="form-group">
-            <label for="fromCurrency">Из валюты:</label>
-            <select class="form-control" id="fromCurrency">
-                <option value="TRH">TRH</option>
-                <option value="CPS">CPS</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="toCurrency">В валюту:</label>
-            <select class="form-control" id="toCurrency">
-                <option value="CPS">CPS</option>
-                <option value="TRH">TRH</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="exchangeAmount">Сумма:</label>
-            <input type="number" class="form-control" id="exchangeAmount" placeholder="Сумма для обмена">
-        </div>
-        <button class="btn btn-primary" onclick="sendExchangeData()">Обменять</button>
-    </div>
+    <script>
+        // Initialize Telegram Web App
+        Telegram.WebApp.ready();
 
-    <div id="sendForm" style="display: none;">
-        <h2>Отправить валюту</h2>
-        <div class="form-group">
-            <label for="sendCurrency">Валюта:</label>
-            <select class="form-control" id="sendCurrency">
-                <option value="TRH">TRH</option>
-                <option value="CPS">CPS</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="recipient">Получатель (адрес):</label>
-            <input type="text" class="form-control" id="recipient" placeholder="Адрес получателя">
-        </div>
-        <div class="form-group">
-            <label for="sendAmount">Сумма:</label>
-            <input type="number" class="form-control" id="sendAmount" placeholder="Сумма для отправки">
-        </div>
-        <button class="btn btn-primary" onclick="sendTransferData()">Отправить</button>
-    </div>
-</div>
+        function getBalance() {
+            // Здесь нужно реализовать получение баланса.
+            // В реальном приложении вы бы отправляли запрос на ваш сервер,
+            // который бы взаимодействовал с кодом вашего бота.
+            // Для примера:
+            document.getElementById('balance').innerText = "Баланс: (Нужно реализовать получение с сервера)";
+        }
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script>
-    const tg = window.Telegram.WebApp;
-    tg.expand(); // Optional: Expand the Web App to full screen
+        function openBuyTrax() {
+            // Открывает функцию покупки TRH через callback
+            Telegram.WebApp.close(); // Закрываем WebApp
+            Telegram.WebApp.sendData("buy_trax"); // Отправляем данные боту для выполнения коллбэка
+        }
 
-    document.getElementById('action').addEventListener('change', function() {
-        const action = this.value;
-        document.getElementById('exchangeForm').style.display = action === 'exchange' ? 'block' : 'none';
-        document.getElementById('sendForm').style.display = action === 'send' ? 'block' : 'none';
-    });
+        function openWithdraw() {
+            // Открывает функцию вывода средств через callback
+            Telegram.WebApp.close(); // Закрываем WebApp
+            Telegram.WebApp.sendData("withdraw_crypto"); // Отправляем данные боту для выполнения коллбэка
+        }
 
-    function sendExchangeData() {
-        const fromCurrency = document.getElementById('fromCurrency').value;
-        const toCurrency = document.getElementById('toCurrency').value;
-        const amount = document.getElementById('exchangeAmount').value;
-
-        const data = {
-            action: 'exchange',
-            fromCurrency: fromCurrency,
-            toCurrency: toCurrency,
-            amount: amount
-        };
-        tg.sendData(JSON.stringify(data));
-    }
-
-    function sendTransferData() {
-        const currency = document.getElementById('sendCurrency').value;
-        const recipient = document.getElementById('recipient').value;
-        const amount = document.getElementById('sendAmount').value;
-
-        const data = {
-            action: 'send',
-            currency: currency,
-            recipient: recipient,
-            amount: amount
-        };
-        tg.sendData(JSON.stringify(data));
-    }
-</script>
-
+        // set main background color
+        Telegram.WebApp.setBackgroundColor("#222");
+    </script>
 </body>
 </html>
