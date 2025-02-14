@@ -1,210 +1,78 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>TRH/CPS Wallet</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body, h1, h2, ul, li, p, input {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box; /* Чтобы padding и border учитывались в размере элемента */
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+
+public class TelegramWalletBot extends TelegramLongPollingBot {
+
+    private String botToken = "7277092887:AAEQJv0CkoC2AaRowQbCi_YrKIlEjCVmv18"; // Замените на ваш токен
+    private String botUsername = "Trahkoin_bot"; // Замените на имя вашего бота
+
+    private double trhBalance = 0;  // Баланс TRH (очень простое хранение!)
+    private double cpsBalance = 0;  // Баланс CPS (очень простое хранение!)
+
+    @Override
+    public String getBotUsername() {
+        return botUsername;
+    }
+
+    @Override
+    public String getBotToken() {
+        return botToken;
+    }
+
+
+    @Override
+    public void onUpdateReceived(Update update) {
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            String messageText = update.getMessage().getText();
+            long chatId = update.getMessage().getChatId();
+
+            if (messageText.equals("/start")) {
+                sendMessage(chatId, "Привет! Ваш баланс: TRH " + trhBalance + ", CPS " + cpsBalance);
+            } else if (messageText.startsWith("/buytrh ")) {
+                try {
+                    double amount = Double.parseDouble(messageText.substring("/buytrh ".length()));
+                    trhBalance += amount;
+                    sendMessage(chatId, "Вы купили " + amount + " TRH. Новый баланс: " + trhBalance);
+                } catch (NumberFormatException e) {
+                    sendMessage(chatId, "Неверный формат суммы.");
+                }
+            } else if (messageText.startsWith("/sendtrh ")) {
+                  sendMessage(chatId, "Функция отправки пока не реализована.");
+            }else if (messageText.startsWith("/exchangetrhcps ")) {
+                try {
+                    double amount = Double.parseDouble(messageText.substring("/exchangetrhcps ".length()));
+                    if (trhBalance >= amount) {
+                        trhBalance -= amount;
+                        cpsBalance += amount;
+                        sendMessage(chatId, "Вы обменяли " + amount + " TRH на " + amount + " CPS. Новый баланс TRH: " + trhBalance + ", CPS: " + cpsBalance);
+                    } else {
+                        sendMessage(chatId, "Недостаточно TRH.");
+                    }
+                } catch (NumberFormatException e) {
+                    sendMessage(chatId, "Неверный формат суммы.");
+                }
+            }else {
+                sendMessage(chatId, "Неизвестная команда.");
+            }
         }
+    }
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #121A2A; /* Цвет фона всего body */
-            color: #E2E8F0;
-            display: flex;
-            justify-content: center; /* Центрируем по горизонтали */
-            align-items: center; /* Центрируем по вертикали */
-            min-height: 100vh;
-            overflow: hidden;
+    private void sendMessage(long chatId, String text) {
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText(text);
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
+    }
 
-        .container {
-            max-width: 450px;
-            width: 90%;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #1E293B;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            min-height: 60vh; /* Минимальная высота контейнера */
-            flex-grow: 1; /* Занимает все доступное пространство */
-        }
-
-        h1 {
-            font-size: 1.75rem;
-            font-weight: 500;
-            text-align: center;
-            color: #CBD5E0;
-            margin-bottom: 20px;
-            letter-spacing: 0.5px;
-        }
-
-        .balance {
-            font-size: 2.25rem;
-            font-weight: 700;
-            color: #FFFFFF;
-            margin-bottom: 30px;
-            text-align: center;
-            line-height: 1;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .button {
-            background-color: #3B82F6;
-            color: #FFFFFF;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
-            text-decoration: none;
-            text-align: center;
-            flex: 1;
-            margin: 0 5px;
-        }
-
-        .button:hover {
-            background-color: #2563EB;
-        }
-
-        .asset-list {
-            list-style: none;
-            padding: 0;
-            width: 100%;
-        }
-
-        .asset-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            margin-bottom: 8px;
-            background-color: #2D3748;
-            border-radius: 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        .asset-item:hover {
-            background-color: #4A5568;
-        }
-
-        .asset-name {
-            font-weight: 500;
-            font-size: 1.1rem;
-            color: #CBD5E0;
-        }
-
-        .asset-value {
-            text-align: right;
-            font-size: 1.1rem;
-            color: #FFFFFF;
-        }
-
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #2D3748;
-            color: #E2E8F0;
-            border: 1px solid #4A5568;
-            border-radius: 5px;
-        }
-
-        #sendDataButton {
-            background-color: #48BB78;
-            color: #FFFFFF;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
-            margin-top: 20px;
-        }
-
-        #sendDataButton:hover {
-            background-color: #38A169;
-        }
-
-
-        body.tg-theme-dark {
-            background-color: #222;
-            color: #fff;
-        }
-
-        .asset-item.tg-theme-dark {
-            background-color: #333;
-        }
-
-        h1.tg-theme-dark {
-            color: #fff;
-        }
-        .container.tg-theme-dark {
-            background-color: #2D3748;
-        }
-    </style>
-</head>
-<body class="">
-<div class="container">
-    <h1>TRH/CPS Wallet</h1>
-    <div class="balance">0.00</div>
-
-    <div class="button-container">
-        <button class="button">Отправить</button>
-        <button class="button">Получить</button>
-        <button class="button">Обмен</button>
-    </div>
-
-    <ul class="asset-list">
-        <li class="asset-item">
-            <span class="asset-name">TRH</span>
-            <span class="asset-value">0.00</span>
-        </li>
-        <li class="asset-item">
-            <span class="asset-name">CPS</span>
-            <span class="asset-value">0.00</span>
-        </li>
-    </ul>
-
-    <button id="sendDataButton">Send Data</button>
-</div>
-
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script>
-    const tg = window.Telegram.WebApp;
-    tg.ready();
-
-    const themeClass = tg.colorScheme === 'dark' ? 'tg-theme-dark' : '';
-    document.body.classList.add(themeClass);
-
-    document.getElementById("sendDataButton").addEventListener("click", () => {
-        const data = {
-            balance: "0.00",
-            trh: "0.00",
-            cps: "0.00"
-        };
-        tg.sendData(JSON.stringify(data));
-        tg.close();
-    });
-</script>
-</body>
-</html>
+    public static void main(String[] args) {
+        // В этом примере нет полноценного запуска бота, т.к. он не интегрирован с Spring Boot и requires a framework to run
+        System.out.println("Simple Telegram Bot running (extremely limited functionality).");
+    }
+}
