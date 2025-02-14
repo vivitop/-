@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TON Space Wallet Mini App</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #121A2A; /* Dark background */
+            color: #FFFFFF; /* White text */
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #FFFFFF;
+            text-align: center;
+        }
+        .balance {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .asset-list {
+            list-style: none;
+            padding: 0;
+        }
+        .asset-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #1E293B; /* Slightly lighter background */
+            border-radius: 5px;
+        }
+        .asset-name {
+            font-weight: bold;
+        }
+        .asset-value {
+            text-align: right;
+        }
+        .button {
+            background-color: #2563EB; /* Blue button */
+            color: #FFFFFF;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #1E40AF;
+        }
+        /* Styling for better integration with Telegram */
+        body.tg-theme-dark {
+            background-color: #222;
+            color: #fff;
+        }
+        .asset-item.tg-theme-dark {
+            background-color: #333;
+        }
+        h1.tg-theme-dark {
+            color: #fff;
+        }
+    </style>
+</head>
+<body class="">
+    <div class="container">
+        <h1>My Wallet</h1>
+        <div class="balance">0.00 ₽</div>
+        <ul class="asset-list">
+            <li class="asset-item">
+                <span class="asset-name">Dollars</span>
+                <span class="asset-value">0.00 USDT</span>
+            </li>
+            <li class="asset-item">
+                <span class="asset-name">Toncoin</span>
+                <span class="asset-value">0.00 TON</span>
+            </li>
+            <li class="asset-item">
+                <span class="asset-name">Bitcoin</span>
+                <span class="asset-value">0.00 BTC</span>
+            </li>
+        </ul>
+        <button id="sendDataButton" class="button">Send Data</button>
+    </div>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+
+        const themeClass = tg.colorScheme === 'dark' ? 'tg-theme-dark' : '';
+        document.body.classList.add(themeClass);
+
+        document.getElementById("sendDataButton").addEventListener("click", () => {
+            const data = {
+                balance: "0.00 ₽",
+                assets: [
+                    { name: "Dollars", value: "0.00 USDT" },
+                    { name: "Toncoin", value: "0.00 TON" },
+                    { name: "Bitcoin", value: "0.00 BTC" }
+                ]
+            };
+            tg.sendData(JSON.stringify(data));
+            tg.close();
+        });
+    </script>
+</body>
+</html>
