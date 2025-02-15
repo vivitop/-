@@ -171,7 +171,6 @@
       line-height: 1.6;
       margin-bottom: 30px;
     }
-
     /* Секция "О канале" */
     #about {
       padding: 60px 20px;
@@ -356,9 +355,37 @@
         max-width: 90%;
       }
     }
+
+    /* Стили для моргания */
+    .blink {
+      animation: blinker 0.1s linear infinite;
+    }
+
+    @keyframes blinker {
+      50% {
+        background-color: black;
+      }
+    }
+
+    /* Стили для "Прогресс..." */
+    #progress-text {
+      position: absolute;
+      font-size: 2em;
+      color: white;
+      text-shadow: 2px 2px 4px black;
+      z-index: 1000; /* Чтобы надпись была поверх всего */
+      display: none; /* Скрываем изначально */
+    }
+
+    #progress-image {
+      position: absolute;
+      z-index: 999; /* Чтобы картинка была поверх всего */
+      display: none;
+    }
+
   </style>
 </head>
-<body>
+<body class="blink">
 
   <header>
     <div class="logo">
@@ -433,6 +460,48 @@
     <p>&copy; 2023 MAKTRAHHER228. Все права защищены.</p>
     <p>Сделано с любовью и космическим безумием.</p>
   </footer>
+
+  <div id="progress-text">Прогресс...</div>
+    <img id="progress-image" src="https://avatars.mds.yandex.net/i?id=86138e2f1956bcc4b3d4f74e26e605ba_l-9609067-images-thumbs&n=13" alt="Прогресс">
+
+  <script>
+    function toggleBlink() {
+      document.body.classList.toggle('blink');
+    }
+
+    function showProgress() {
+      const progressText = document.getElementById('progress-text');
+      const progressImage = document.getElementById('progress-image');
+
+      // Рандомные координаты
+      const x = Math.random() * (window.innerWidth - 200);  // Вычитаем ширину, чтобы не вылезало за экран
+      const y = Math.random() * (window.innerHeight - 100); // Вычитаем высоту, чтобы не вылезало за экран
+
+      progressText.style.left = x + 'px';
+      progressText.style.top = y + 'px';
+      progressImage.style.left = x + 'px';
+      progressImage.style.top = y + 'px';
+
+      progressText.style.display = 'block';
+      progressImage.style.display = 'block';
+
+      // Скрываем через короткое время
+      setTimeout(() => {
+        progressText.style.display = 'none';
+        progressImage.style.display = 'none';
+      }, 1000); // 1 секунда
+    }
+
+
+    // Запускаем моргание каждые 5 секунд
+    setInterval(() => {
+      toggleBlink();
+      setTimeout(toggleBlink, 100); // Выключаем моргание через 100мс
+    }, 5000);
+
+    // Показываем "Прогресс..." каждые 5 секунд
+    setInterval(showProgress, 5000);
+  </script>
 
 </body>
 </html>
