@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAKTRAHER228 - Космическая бездна мемов!</title>
+  <title>MAKTRAHHER228 - Космическая бездна мемов!</title>
   <link rel="icon" href="https://i.imgur.com/rXDrfaG.jpeg" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,6 +17,7 @@
       background: radial-gradient(circle, #201030, #100818); /* Космический фон */
       color: #eee;
       overflow-x: hidden; /* Скрываем горизонтальную прокрутку */
+      transition: background-color 0.2s ease; /* Плавное изменение цвета фона */
     }
 
     h1, h2, h3 {
@@ -73,13 +74,9 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('https://wallpapers.com/images/featured/pusheen-pc-xsnstusz0b9k4im5.jpg'); /* Замените на свою текстуру звезд */
-      opacity: 0.3;
-      animation: stars 50s linear infinite; /* Анимация звезд */
-    }
-    @keyframes stars {
-      from { background-position: 0 0; }
-      to { background-position: 1000px 0; }
+      background: url('https://i.gifer.com/fetch/w300-preview/c9/c91f6bd038a276b5dd61246cff6c919c.gif'); /* Замените на свою текстуру звезд */
+      opacity: 0.7;
+      background-size: cover; /* Растягиваем GIF на весь header */
     }
 
     .logo {
@@ -171,6 +168,7 @@
       line-height: 1.6;
       margin-bottom: 30px;
     }
+
     /* Секция "О канале" */
     #about {
       padding: 60px 20px;
@@ -224,8 +222,7 @@
     #latest-posts h2 {
       text-align: center;
       margin-bottom: 40px;
-      text-transform: uppercase; /* Заголовки в верхнем регистре */
-      letter-spacing: 2px; /* Увеличенный интервал между буквами */
+      text-transform: uppercase; /* Заголовки в верхнем регистре */letter-spacing: 2px; /* Увеличенный интервал между буквами */
     }
 
     .post-grid {
@@ -370,7 +367,7 @@
     /* Стили для "Прогресс..." */
     #progress-text {
       position: absolute;
-      font-size: 2em;
+      font-size: 1.5em; /* Уменьшаем размер */
       color: white;
       text-shadow: 2px 2px 4px black;
       z-index: 1000; /* Чтобы надпись была поверх всего */
@@ -381,6 +378,8 @@
       position: absolute;
       z-index: 999; /* Чтобы картинка была поверх всего */
       display: none;
+      width: 50px; /* Уменьшаем размер */
+      height: auto;
     }
 
   </style>
@@ -391,7 +390,7 @@
     <div class="logo">
       <img src="https://i.imgur.com/rXDrfaG.jpeg" alt="Логотип канала">
       <h1>MAKTRAHHER228</h1>
-    </div>
+</div>
     <nav>
       <a href="#about">О канале</a>
       <a href="#latest-posts">Последние посты</a>
@@ -465,17 +464,27 @@
     <img id="progress-image" src="https://avatars.mds.yandex.net/i?id=86138e2f1956bcc4b3d4f74e26e605ba_l-9609067-images-thumbs&n=13" alt="Прогресс">
 
   <script>
+    const body = document.body;
     function toggleBlink() {
-      document.body.classList.toggle('blink');
+      body.classList.toggle('blink');
+    }
+
+    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']; // Цвета для фона
+
+    function changeBackgroundColor() {
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      body.style.backgroundColor = randomColor;
     }
 
     function showProgress() {
       const progressText = document.getElementById('progress-text');
       const progressImage = document.getElementById('progress-image');
 
-      // Рандомные координаты
-      const x = Math.random() * (window.innerWidth - 200);  // Вычитаем ширину, чтобы не вылезало за экран
-      const y = Math.random() * (window.innerHeight - 100); // Вычитаем высоту, чтобы не вылезало за экран
+      // Рандомные координаты для любого места на странице
+      const x = Math.random() * (window.innerWidth - 100);  // Вычитаем ширину, чтобы не вылезало за экран
+      const y = Math.random() \
+ 
+* (document.body.scrollHeight - 50); // Учитываем высоту всего документа
 
       progressText.style.left = x + 'px';
       progressText.style.top = y + 'px';
@@ -492,15 +501,35 @@
       }, 1000); // 1 секунда
     }
 
-
     // Запускаем моргание каждые 5 секунд
     setInterval(() => {
       toggleBlink();
       setTimeout(toggleBlink, 100); // Выключаем моргание через 100мс
     }, 5000);
 
-    // Показываем "Прогресс..." каждые 5 секунд
-    setInterval(showProgress, 5000);
+    // Функция для случайного появления фона
+    function randomBackgroundColorChange() {
+      if (Math.random() < 0.2) { // 20% вероятность изменения цвета
+        changeBackgroundColor();
+        setTimeout(() => {
+          body.style.backgroundColor = 'radial-gradient(circle, #201030, #100818)'; // Возвращаем исходный фон
+        }, 300); // Возвращаем исходный фон через 0.3 секунды
+      }
+    }
+
+    // Запускаем изменение цвета фона
+    setInterval(randomBackgroundColorChange, 100); // Проверяем каждые 0.1 секунды
+
+    // Запускаем "Прогресс..." в случайные моменты
+    function randomProgressShow() {
+      const randomDelay = Math.random() * 10000 + 5000; // Случайная задержка от 5 до 15 секунд
+      setTimeout(() => {
+        showProgress();
+        randomProgressShow(); // Планируем следующий показ
+      }, randomDelay);
+    }
+
+    randomProgressShow(); // Начинаем показывать "Прогресс..."
   </script>
 
 </body>
