@@ -475,10 +475,15 @@
         <p>Сделано с любовью и космическим безумием.</p>
     </footer>
 
+    <audio id="loading-sound" src="https://zvukogram.com/zvuk/32477/" preload="auto"></audio>
 
     <script>
         const body = document.body;
         const loadingScreen = document.getElementById('loading-screen');
+        const loadingSound = document.getElementById('loading-sound');
+
+        // Устанавливаем громкость на максимум (1.0)
+        loadingSound.volume = 1.0;
 
         function toggleBlink() {
             body.classList.toggle('blink');
@@ -520,10 +525,15 @@
                 } else {
                     clearInterval(intervalId); // Останавливаем интервал
                     loadingScreen.style.display = 'none'; // Скрываем элемент
+                    loadingSound.pause(); // Останавливаем звук
                 }
             }, 20); // Интервал обновления - 20 мс
         }
-        window.addEventListener('load', () => {
+
+        window\
+ 
+.addEventListener('load', () => {
+            loadingSound.play(); // Начинаем воспроизведение звука
             setTimeout(fadeOutLoadingScreen, 2000); // Задержка в 2 секунды перед исчезновением
         });
 
