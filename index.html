@@ -10,14 +10,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
     <style>
         /* Общие стили */
+        html, body { /* Добавляем стили для html тоже */
+            height: 100%; /* Занимаем всю высоту экрана */
+            margin: 0; /* Убираем отступы по умолчанию */
+        }
         body {
             font-family: 'Comic Neue', sans-serif;
-            margin: 0;
             padding: 0;
             background: radial-gradient(circle, #201030, #100818); /* Космический фон */
             color: #eee;
             overflow-x: hidden; /* Скрываем горизонтальную прокрутку */
             transition: background-color 0.2s ease; /* Плавное изменение цвета фона */
+            display: flex;                /* Enable flex layout */
+            flex-direction: column;        /* Stack children vertically */
         }
 
         h1, h2, h3 {
@@ -196,7 +201,7 @@
             margin-bottom: 15px;
             position: relative;
             padding-left: 30px;
-            transition: transform 0.3s ease; /* Эффектпри наведении на элемент списка */
+            transition: transform 0.3s ease; /* Эффект при наведении на элемент списка */
         }
 
         #about li:hover {
@@ -325,7 +330,7 @@
 
         @keyframes waves {
             from { background-position-x: 0; }
-            to { background-position-x:-1000px; }
+            to { background-position-x: -1000px; }
         }
 
         /* Адаптивность */
@@ -383,6 +388,10 @@
             max-width: 80%; /* Ограничиваем размер изображения */
             max-height: 80%;
         }
+
+        main {
+            flex: 1; /* Allow main to grow to fill available space */
+        }
     </style>
 </head>
 <body class="blink">
@@ -403,62 +412,64 @@
         </nav>
     </header>
 
-    <section id="hero">
-        <div class="hero-content">
-            <h2>Добро пожаловать в Космическую бездну мемов!</h2>
-            <p>Здесь юмор искривляет пространство и время. Подписывайтесь, если готовы к межгалактическому смеху!</p>
-            <a href="https://t.me/maktrahher228" class="button" target="_blank">Отправиться в мем-сингулярность</a>
-        </div>
-    </section>
-
-    <section id="about">
-        <h2>О канале</h2>
-        <p>Канал MAKTRAHHER228 – это портал в мир, где гравитация юмора сильнее всего. Мы собираем самые редкие мемы со всей Вселенной и доставляем их прямо в ваш Telegram!</p>
-        <p><strong>Почему стоит подписаться?</strong></p>
-        <ul>
-            <li>Межзвездные мемы каждый день</li>
-            <li>Юмор, который расширяет границы сознания</li>
-            <li>Сообщество исследователей смеха</li>
-            <li>Возможность стать космонавтом юмора</li>
-        </ul>
-    </section>
-
-    <section id="latest-posts">
-        <h2>Артефакты смеха из глубин космоса</h2>
-        <div class="post-grid">
-
-            <!-- Пример поста 1 -->
-            <div class="post">
-                <img src="https://i.imgur.com/swdheYs.jpeg" alt="Мем 1">
-                <h3>Мем 1: Когда забыл выключить темную тему в космосе</h3>
-                <p>Описание: Даже в космосе темная тема — это святое...</p>
-                <a href="https://t.me/maktrahher228/123" class="button" target="_blank">Увидеть в Telegram</a>
+    <main>
+        <section id="hero">
+            <div class="hero-content">
+                <h2>Добро пожаловать в Космическую бездну мемов!</h2>
+                <p>Здесь юмор искривляет пространство и время. Подписывайтесь, если готовы к межгалактическому смеху!</p>
+                <a href="https://t.me/maktrahher228" class="button" target="_blank">Отправиться в мем-сингулярность</a>
             </div>
+        </section>
 
-            <!-- Пример поста 2 -->
-            <div class="post">
-                <img src="https://i.imgur.com/IpIpsS2.jpeg" alt="Мем 2">
-                <h3>Мем 2: Прокрастинация в черной дыре</h3>
-                <p>Описание: Время летит незаметно, когда прокрастинируешь в черной дыре...</p>
-                <a href="https://t.me/maktrahher228/124" class="button" target="_blank">Увидеть в Telegram</a></div>
+        <section id="about">
+            <h2>О канале</h2>
+            <p>Канал MAKTRAHHER228 – это портал в мир, где гравитация юмора сильнее всего. Мы собираем самые редкие мемы со всей Вселенной и доставляем их прямо в ваш Telegram!</p>
+            <p><strong>Почему стоит подписаться?</strong></p>
+            <ul>
+                <li>Межзвездные мемы каждый день</li>
+                <li>Юмор, который расширяет границы сознания</li>
+                <li>Сообщество исследователей смеха</li>
+                <li>Возможность стать космонавтом юмора</li>
+            </ul>
+        </section>
 
-            <!-- Пример поста 3 -->
-            <div class="post">
-                <img src="https://i.imgur.com/5S0JmOk.jpeg" alt="Мем 3">
-                <h3>Мем 3: Космический программист</h3>
-                <p>Описание: Отладка кода на космической станции — это вам не шутки...</p>
-                <a href="https://t.me/maktrahher228/125" class="button" target="_blank">Увидеть в Telegram</a>
+        <section id="latest-posts">
+            <h2>Артефакты смеха из глубин космоса</h2>
+            <div class="post-grid">
+
+                <!-- Пример поста 1 -->
+                <div class="post">
+                    <img src="https://i.imgur.com/swdheYs.jpeg" alt="Мем 1">
+                    <h3>Мем 1: Когда забыл выключить темную тему в космосе</h3>
+                    <p>Описание: Даже в космосе темная тема — это святое...</p>
+                    <a href="https://t.me/maktrahher228/123" class="button" target="_blank">Увидеть в Telegram</a>
+                </div>
+
+                <!-- Пример поста 2 -->
+                <div class="post">
+                    <img src="https://i.imgur.com/IpIpsS2.jpeg" alt="Мем 2">
+                    <h3>Мем 2: Прокрастинация в черной дыре</h3>
+                    <p>Описание: Время летит незаметно, когда прокрастинируешь в черной дыре...</p>
+                    <a href="https://t.me/maktrahher228/124" class="button" target="_blank">Увидеть в Telegram</a>
+                </div>
+
+                <!-- Пример поста 3 -->
+                <div class="post">
+                    <img src="https://i.imgur.com/5S0JmOk.jpeg" alt="Мем 3">
+                    <h3>Мем 3: Космический программист</h3>
+                    <p>Описание: Отладка кода на космической станции — это вам не шутки...</p>
+                    <a href="https://t.me/maktrahher228/125" class="button" target="_blank">Увидеть в Telegram</a>
+                </div>
+
             </div>
+        </section>
 
-        </div>
-    </section>
-
-    <section id="contact">
-        <h2>Связаться с хранителем космического юмора</h2>
-        <p>По вопросам межгалактического сотрудничества пишите: <a href="mailto:your_email@example.com">your_email@example.com</a></p>
-        <p>Подписывайтесь на мой Telegram: <a href="https://t.me/maktrahher228" target="_blank">@maktrahher228</a></p>
-    </section>
-
+        <section id="contact">
+            <h2>Связаться с хранителем космического юмора</h2>
+            <p>По вопросам межгалактического сотрудничества пишите: <a href="mailto:your_email@example.com">your_email@example.com</a></p>
+            <p>Подписывайтесь на мой Telegram: <a href="https://t.me/maktrahher228" target="_blank">@maktrahher228</a></p>
+        </section>
+    </main>
     <footer>
         <p>&copy; 2023 MAKTRAHHER228. Все права защищены.</p>
         <p>Сделано с любовью и космическим безумием.</p>
