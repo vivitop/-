@@ -171,6 +171,7 @@
       line-height: 1.6;
       margin-bottom: 30px;
     }
+
     /* Секция "О канале" */
     #about {
       padding: 60px 20px;
@@ -213,7 +214,79 @@
       font-size: 1.2em;
     }
 
-    /* Секция "Связаться" */
+    /* Секция "Последние посты" */
+    #latest-posts {
+      padding: 60px 20px;
+      background: linear-gradient(to bottom, rgba(24, 24, 40, 0.7), rgba(24, 24, 40, 0.9)); /* Градиент */
+      border-top: 2px solid #503070;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    #latest-posts h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      text-transform: uppercase; /* Заголовки в верхнем регистре */
+      letter-spacing: 2px; /* Увеличенный интервал между буквами */
+    }
+
+    .post-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      perspective: 1000px; /* Для 3D-трансформаций */
+    }
+
+    .post {
+      background: rgba(40, 40, 60, 0.8); /* Полупрозрачный фон */
+      border: 2px solid #503070;
+      border-radius: 10px;
+      padding: 20px;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d; /* Важно для 3D-эффектов */
+    }
+
+    .post:hover {
+      transform: translateY(-7px) rotateX(10deg); /* Подъем и наклон */
+      box-shadow: 0 7px 25px rgba(0, 0, 0, 0.7);
+    }
+
+    .post::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #f0f, transparent);
+      opacity: 0.2;
+      z-index: 0;
+    }
+
+    .post > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .post img {
+      width: 100%;
+      border-radius: 7px;
+      margin-bottom: 15px;
+      transition: transform 0.6s ease; /* Медленная трансформация */
+    }
+
+    .post:hover img {
+      transform: scale(1.1) rotate(3deg); /* Увеличение и поворот */
+    }
+
+    .post h3 {
+      margin-top: 0;
+      font-size: 1.4em;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    /* Секция "Связь с автором" */
     #contact {
       padding: 60px 20px;
       text-align: center;
@@ -283,96 +356,6 @@
         max-width: 90%;
       }
     }
-
-     /* === НОВЫЕ СТИЛИ (из всех дополнений) === */
-      /* Стили для фильтрации мемов */
-    .category-filter {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .category-filter a {
-      display: inline-block;
-      padding: 8px 15px;
-      margin: 0 5px;
-      background-color: #402060;
-      color: #fff;
-      border-radius: 5px;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-    }
-
-    .category-filter a.active, .category-filter a:hover {
-      background-color: #a0f;
-    }
-
-    /* Скрываем по умолчанию (если JavaScript не работает) */
-    .post:not(.all) {
-      display: none;
-    }
-
-    /* Стили для светлой темы */
-    body.light-mode {
-      background: radial-gradient(circle, #e0e0e0, #f0f0f0);
-      color: #333;
-    }
-
-    body.light-mode h1, body.light-mode h2, body.light-mode h3 {
-      color: #800080; /* Более темный фиолетовый */
-      text-shadow: 1px 1px 2px #ccc;
-    }
-
-    body.light-mode a {
-      color: #800080;
-    }
-
-    body.light-mode header {
-      background: rgba(200, 200, 200, 0.8);
-      border-bottom: 2px solid #bbb;
-    }
-
-    body.light-mode #about {
-      background: rgba(200, 200, 200, 0.4);
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-
-    body.light-mode #latest-posts {
-      background: linear-gradient(to bottom, rgba(220, 220, 220, 0.7), rgba(220, 220, 220, 0.9));
-    }
-
-    body.light-mode .post {
-      background: rgba(230, 230, 230, 0.8);
-      border: 2px solid #bbb;
-    }
-
-    body.light-mode footer {
-      background: rgba(200, 200, 200, 0.9);
-      border-top: 2px solid #bbb;
-    }
-
-    /* Стили для бегущей строки */
-    .marquee-container {
-      overflow: hidden; /* Скрываем лишнее */
-      position: relative;
-      height: 30px; /* Высота строки */
-      background-color: rgba(0, 0, 0, 0.3); /* Полупрозрачный фон */
-      color: #fff;
-      padding: 5px 0;
-    }
-
-    .marquee {
-      position: absolute;
-      width: 200%; /* Ширина больше контейнера */
-      height: 100%;
-      animation: marquee 20s linear infinite; /* Анимация */
-      white-space: nowrap; /* Запрещаем перенос текста */
-      padding-left: 100%; /* Начальный отступ */
-    }
-
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
   </style>
 </head>
 <body>
@@ -387,7 +370,6 @@
       <a href="#latest-posts">Последние посты</a>
       <a href="#contact">Связь с автором</a>
     </nav>
-    <button id="theme-toggle">Переключить тему</button>
   </header>
 
   <section id="hero">
@@ -395,9 +377,6 @@
       <h2>Добро пожаловать в Космическую бездну мемов!</h2>
       <p>Здесь юмор искривляет пространство и время. Подписывайтесь, если готовы к межгалактическому смеху!</p>
       <a href="https://t.me/maktrahher228" class="button" target="_blank">Отправиться в мем-сингулярность</a>
-       <input type="text" id="meme-request" placeholder="Закажите мем на тему..." >
-       <button id="request-button">Заказать</button>
-       <p id="request-message"></p>
     </div>
   </section>
 
@@ -415,17 +394,10 @@
 
   <section id="latest-posts">
     <h2>Артефакты смеха из глубин космоса</h2>
-
-    <div class="category-filter">
-      <a href="#" data-category="all" class="active">Все мемы</a>
-      <a href="#" data-category="space">Космос</a>
-      <a href="#" data-category="games">Игры</a>
-      <a href="#" data-category="cats">Котики</a>
-    </div>
-
     <div class="post-grid">
+
       <!-- Пример поста 1 -->
-      <div class="post space">
+      <div class="post">
         <img src="https://i.imgur.com/swdheYs.jpeg" alt="Мем 1">
         <h3>Мем 1: Когда забыл выключить темную тему в космосе</h3>
         <p>Описание: Даже в космосе темная тема — это святое...</p>
@@ -433,7 +405,7 @@
       </div>
 
       <!-- Пример поста 2 -->
-      <div class="post games">
+      <div class="post">
         <img src="https://i.imgur.com/IpIpsS2.jpeg" alt="Мем 2">
         <h3>Мем 2: Прокрастинация в черной дыре</h3>
         <p>Описание: Время летит незаметно, когда прокрастинируешь в черной дыре...</p>
@@ -441,14 +413,12 @@
       </div>
 
       <!-- Пример поста 3 -->
-      <div class="post cats">
+      <div class="post">
         <img src="https://i.imgur.com/5S0JmOk.jpeg" alt="Мем 3">
-        <h3>Мем 3: Космический кот-программист</h3>
-        <p>Описание: Отладка мяу-кода на космической станции...</p>
+        <h3>Мем 3: Космический программист</h3>
+        <p>Описание: Отладка кода на космической станции — это вам не шутки...</p>
         <a href="https://t.me/maktrahher228/125" class="button" target="_blank">Увидеть в Telegram</a>
       </div>
-
-      <!-- Добавь больше мемов, присваивая им классы категорий -->
 
     </div>
   </section>
@@ -460,76 +430,9 @@
   </section>
 
   <footer>
-    <div class="marquee-container">
-      <div class="marquee">
-        <span>Добро пожаловать в Космическую Бездну Мемесов!  Подписывайтесь на MAKTRAHHER228 в Telegram!  Новые мемы каждый день!  Поддержите канал донатом!  Космический юмор для всех!</span>
-      </div>
-    </div>
     <p>&copy; 2023 MAKTRAHHER228. Все права защищены.</p>
     <p>Сделано с любовью и космическим безумием.</p>
   </footer>
-
-  <script>
-     // === НОВЫЕ СКРИПТЫ (из всех дополнений) ===
-    // Скрипт для фильтрации
-    document.addEventListener('DOMContentLoaded', function() {
-      const filterLinks = document.querySelectorAll('.category-filter a');
-      const posts = document.querySelectorAll('.post');
-
-      filterLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          const category = this.dataset.category;
-
-          // Убираем класс "active" у всех ссылок
-          filterLinks.forEach(l => l.classList.remove('active'));
-          // Добавляем класс "active" к текущей ссылке
-          this.classList.add('active');
-
-          // Показываем/скрываем посты
-          posts.forEach(post => {
-            if (category === 'all' || post.classList.contains(category)) {
-              post.style.display = 'block'; // Или 'grid-cell' в зависимости от стиля
-            } else {
-              post.style.display = 'none';
-            }
-          });
-        });
-      });
-    });
-
-    // Скрипт для темной/светлой темы
-    document.addEventListener('DOMContentLoaded', function() {
-      const themeToggle = document.getElementById('theme-toggle');
-      const body = document.body;
-
-      themeToggle.addEventListener('click', function() {
-        body.classList.toggle('light-mode');
-      });
-    });
-
-       document.addEventListener('DOMContentLoaded', function() {
-        const requestButton = document.getElementById('request-button');
-        const memeRequest = document.getElementById('meme-request');
-        const requestMessage = document.getElementById('request-message');
-
-        requestButton.addEventListener('click', function() {
-            const requestText = memeRequest.value;
-            if (requestText.trim() !== "") {
-                requestMessage.textContent = "Спасибо за заказ мема!  Мы работаем над этим!";
-                memeRequest.value = ""; // Очистить поле ввода
-                setTimeout(function() {
-                  requestMessage.textContent = ""; // Скрыть сообщение через 3 секунды
-                }, 3000);
-            } else {
-                requestMessage.textContent = "Введите тему мема!";
-                setTimeout(function() {
-                  requestMessage.textContent = "";
-                }, 3000);
-            }
-        });
-    });
-  </script>
 
 </body>
 </html>
