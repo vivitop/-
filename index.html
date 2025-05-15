@@ -1,533 +1,279 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAKTRAHHER228 - кк бездна ов</title>
-    <link rel="icon" href="https://i.imgur.com/rXDrfaG.jpeg" type="image/x-icon">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <title>Ютюб2</title>
     <style>
-        /* Общие стили */
-        html, body { /* Добавляем стили для html тоже */
-            height: 100%; /* Занимаем всю высоту экрана */
-            margin: 0; /* Убираем отступы по умолчанию */
-        }
         body {
-            font-family: 'Comic Neue', sans-serif;
-            padding: 0;
-            background: radial-gradient(circle, #201030, #100818); /* Космический фон */
-            color: #eee;
-            overflow-x: hidden; /* Скрываем горизонтальную прокрутку */
-            transition: background-color 0.2s ease; /* Плавное изменение цвета фона */
-            display: flex;                /* Enable flex layout */
-            flex-direction: column;        /* Stack children vertically */
-        }
-
-        h1, h2, h3 {
-            font-family: 'Luckiest Guy', cursive;
-            color: #f0f; /* Ярко-фиолетовый */
-            text-shadow: 2px 2px 4px #000; /* Более сильная тень */
-        }
-
-        a {
-            color: #a0f;
-            text-decoration: none;
-            transition: color 0.3s ease, text-shadow 0.3s ease; /* Эффект тени при наведении */
-        }
-
-        a:hover {
-            text-decoration: underline;
-            color: #c0f;
-            text-shadow: 1px 1px 3px #000; /* Тень при наведении */
-        }
-
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background: linear-gradient(to bottom, #604080, #402060); /* Градиент для кнопок */
-            color: #fff;
-            border-radius: 7px;
-            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.6);
-            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Эффекты при наведении */
-        }
-
-        .button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
-        }
-
-        /* Шапка сайта */
-        header {
-            background: rgba(10, 5, 15, 0.8); /* Полупрозрачный фон */
-            color: #eee;
-            padding: 15px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #503070;
-            position: relative; /* Для псевдоэлемента */
-            overflow: hidden; /* Скрываем частицы */
-        }
-
-        /* Частицы в шапке (звезды) */
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://i.gifer.com/fetch/w300-preview/c9/c91f6bd038a276b5dd61246cff6c919c.gif'); /* Замените на свою текстуру звезд */
-            opacity: 0.7;
-            background-size: cover; /* Растягиваем GIF на весь header */
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            margin-left: 20px;
-        }
-
-        .logo img {
-            width: 60px;
-            margin-right: 15px;
-            border-radius: 50%;
-            box-shadow: 0 0 15px #f0f; /* Свечение логотипа */
-            transition: transform 0.5s ease; /* Вращение при наведении */
-        }
-
-        .logo:hover img {
-            transform: rotate(360deg);
-        }
-
-        header h1 {
+            font-family: Arial, sans-serif;
             margin: 0;
-            font-size: 1.8em;
-        }
-
-        nav {
-            margin-right: 20px;
-        }
-
-        nav a {
-            color: #a0f;
-            margin-left: 25px;
-            position: relative; /* Для эффекта линии */
-        }
-
-        /* Линия под ссылками в навигации */
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: #c0f;
-            transition: width 0.3s ease; /* Анимация линии */
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        /* Секция Hero */
-        #hero {
-            background: url('https://steamuserimages-a.akamaihd.net/ugc/915798976668163804/476D442FC621CEA0812F51702E64C213A7903099/?imw=512&amp;imh=512&amp;ima=fit&amp;impolicy=Letterbox&amp;imcolor=%23000000&amp;letterbox=true'), radial-gradient(circle, #201030, #100818);
-            background-size: cover, cover;  /* Важно для cover */
-            background-blend-mode: screen;    /* Важно для эффекта смешивания */
-            padding: 80px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: #fff;
-            perspective: 800px; /* Для 3D эффектов */
-        }
-
-        .hero-content {
-            max-width: 700px;
-            animation: fadeIn 1.2s ease-in-out, float 4s ease-in-out infinite alternate;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes float {
-            from { transform: translateY(0); }
-            to { transform: translateY(-20px); }
-        }
-
-        #hero h2 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            text-shadow: 3px 3px 5px #000;
-        }
-
-        #hero p {
-            font-size: 1.2em;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        /* Секция "О канале" */
-        #about {
-            padding: 60px 20px;
-            text-align: center;
-            background: rgba(80, 48, 112, 0.4); /* Полупрозрачный */
-            border-radius: 15px;
-            margin: 30px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px); /* Эффект размытия фона */
-            transform: rotateX(15deg); /* Небольшой наклон */
-            transition: transform 0.4s ease;
-        }
-
-        #about:hover {
-            transform: rotateX(0deg); /* Выравниваем при наведении */
-        }
-
-        #about ul {
-            list-style: none;
             padding: 0;
-            margin-top: 25px;
+            background-color: #f9f9f9;
         }
-
-        #about li {
-            margin-bottom: 15px;
-            position: relative;
-            padding-left: 30px;
-            transition: transform 0.3s ease; /* Эффект при наведении на элемент списка */
-        }
-
-        #about li:hover {
-            transform: translateX(5px); /* Сдвиг вправо при наведении */
-        }
-
-        #about li::before {
-            content: '✨'; /* Более подходящая иконка */
-            position: absolute;
-            left: 0;
-            top: 0;
-            font-size: 1.2em;
-        }
-
-        /* Секция "Последние посты" */
-        #latest-posts {
-            padding: 60px 20px;
-            background: linear-gradient(to bottom, rgba(24, 24, 40, 0.7), rgba(24, 24, 40, 0.9)); /* Градиент */
-            border-top: 2px solid #503070;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        #latest-posts h2 {
-            text-align: center;
-            margin-bottom: 40px;
-            text-transform: uppercase; /* Заголовки в верхнем регистре */
-            letter-spacing: 2px; /* Увеличенный интервал между буквами */
-        }
-
-        .post-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            perspective: 1000px; /* Для 3D-трансформаций */
-        }
-
-        .post {
-            background: rgba(40, 40, 60, 0.8); /* Полупрозрачный фон */
-            border: 2px solid #503070;
-            border-radius: 10px;
-            padding: 20px;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            transform-style: preserve-3d; /* Важно для 3D-эффектов */
-        }
-
-        .post:hover {
-            transform: translateY(-7px) rotateX(10deg); /* Подъем и наклон */
-            box-shadow: 0 7px 25px rgba(0, 0, 0, 0.7);
-        }
-
-        .post::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #f0f, transparent);
-            opacity: 0.2;
-            z-index: 0;
-        }
-
-        .post > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .post img {
-            width: 100%;
-            border-radius: 7px;
-            margin-bottom: 15px;
-            transition: transform 0.6s ease; /* Медленная трансформация */
-        }
-
-        .post:hover img {
-            transform: scale(1.1) rotate(3deg); /* Увеличение и поворот */
-        }
-
-        .post h3 {
-            margin-top: 0;
-            font-size: 1.4em;
-            text-shadow: 1px 1px 2px #000;
-        }
-
-        /* Секция "Связь с автором" */
-        #contact {
-            padding: 60px 20px;
-            text-align: center;
-            background: rgba(10, 5, 15, 0.8);
-            border-top: 2px solid #503070;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        #contact p {
-            font-size: 1.1em;
-            margin-bottom: 20px;
-        }
-
-        /* Подвал */
-        footer {
-            background: rgba(8, 4, 12, 0.9);
-            color: #eee;
-            text-align: center;
-            padding: 25px 0;
-            font-size: 0.9em;
-            border-top: 2px solid #503070;
-            position: relative; /* Для эффекта волн */
-            overflow: hidden;
-        }
-
-        /* Волны в подвале */
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 200%; /* Больше, чем подвал */
-            height: 100%;
-            background: url('https://64.media.tumblr.com/8b2a2d3957cf13e5548f08504f0e1d4a/tumblr_owsbgsWF5R1r5u9m2o3_r1_500.gif'); /* Замените на свою текстуру волн */
-            background-repeat: repeat-x;
-            animation: waves 15s linear infinite; /* Анимация волн */
-            opacity: 0.4;
-        }
-
-        @keyframes waves {
-            from { background-position-x: 0; }
-            to { background-position-x: -1000px; }
-        }
-
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            nav {
-                margin-top: 15px;
-                margin-right: 0;
-            }
-
-            nav a {
-                margin-left: 15px;
-            }
-
-            #hero {
-                flex-direction: column;
-                padding: 60px 0;
-            }
-
-            .hero-content {
-                max-width: 90%;
-            }
-        }
-
-        /* Стили для моргания */
-        .blink {
-            animation: blinker 0.1s linear infinite;
-        }
-
-        @keyframes blinker {
-            50% {
-                background-color: black;
-            }
-        }
-
-        /* Стили для загрузочного экрана */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000; /* Черный фон */
-            z-index: 10000; /* Поверх всего */
+        .header {
+            background-color: #ff0000;
+            color: white;
+            padding: 10px;
             display: flex;
-            justify-content: center;
             align-items: center;
         }
-
-        #loading-screen img {
-            max-width: 80%; /* Ограничиваем размер изображения */
-            max-height: 80%;
+        .header input {
+            margin-left: 20px;
+            padding: 5px;
+            width: 50%;
         }
-
-        main {
-            flex: 1; /* Allow main to grow to fill available space */
+        .sidebar {
+            width: 200px;
+            position: fixed;
+            top: 60px;
+            bottom: 0;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            color: #333;
+            text-decoration: none;
+        }
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .video-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .video-card video {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .video-card h3 {
+            margin: 10px;
+            font-size: 16px;
+        }
+        .video-page {
+            display: none;
+            margin-top: 20px;
+        }
+        .video-page video {
+            width: 100%;
+            max-width: 800px;
+        }
+        .comments {
+            margin-top: 20px;
+        }
+        .comments textarea {
+            width: 100%;
+            max-width: 600px;
+            height: 60px;
+        }
+        .comment-list {
+            margin-top: 10px;
+        }
+        .ad-banner {
+            background-color: #ffeb3b;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .upload-section {
+            margin: 20px 0;
         }
     </style>
 </head>
-<body class="blink">
-
-    <div id="loading-screen">
-        <img src="https://avatars.mds.yandex.net/i?id=86138e2f1956bcc4b3d4f74e26e605ba_l-9609067-images-thumbs&n=13" alt="Загрузка...">
+<body>
+    <div class="header">
+        <h1>Ютюб2</h1>
+        <input type="text" placeholder="Поиск видео..." id="searchBar">
+    </div>
+    <div class="sidebar">
+        <a href="#" onclick="showMainPage()">Главная</a>
+        <a href="#" onclick="showUploadSection()">Загрузить видео</a>
+        <a href="#">Подписки</a>
+    </div>
+    <div class="content">
+        <div class="main-page">
+            <div class="upload-section" style="display: none;" id="uploadSection">
+                <h2>Загрузить видео</h2>
+                <input type="file" id="videoUpload" accept="video/*">
+                <input type="text" id="videoTitle" placeholder="Название видео">
+                <button onclick="uploadVideo()">Загрузить</button>
+            </div>
+            <div class="video-grid" id="videoGrid">
+                <!-- Видео добавляются динамически -->
+            </div>
+        </div>
+        <div class="video-page" id="videoPage">
+            <video controls id="currentVideo"></video>
+            <h2 id="videoTitleDisplay"></h2>
+            <button onclick="subscribe()">Подписаться</button>
+            <div class="ad-banner" id="adBanner">
+                Реклама: Купите подписку на Ютюб2 Премиум! (Имитация)
+            </div>
+            <div class="comments">
+                <h3>Комментарии</h3>
+                <textarea id="commentInput" placeholder="Напишите комментарий..."></textarea>
+                <button onclick="addComment()">Отправить</button>
+                <div class="comment-list" id="commentList"></div>
+            </div>
+        </div>
     </div>
 
-    <header>
-        <div class="logo">
-            <img src="https://i.imgur.com/rXDrfaG.jpeg" alt="Логотип канала">
-            <h1>MAKTRAHHER228</h1>
-        </div>
-        <nav>
-            <a href="#about">О канале</a>
-            <a href="#latest-posts">Последние посты</a>
-            <a href="#contact">Связь с автором</a>
-        </nav>
-    </header>
-
-    <main>
-        <section id="hero">
-            <div class="hero-content">
-                <h2>Добро пожаловать в Космическую бездну мемов!</h2>
-                <p>Здесь юмор искривляет пространство и время. Подписывайтесь, если готовы к межгалактическому смеху!</p>
-                <a href="https://t.me/maktrahher228" class="button" target="_blank">Отправиться в мем-сингулярность</a>
-            </div>
-        </section>
-
-        <section id="about">
-            <h2>О канале</h2>
-            <p>Канал MAKTRAHHER228 – это портал в мир, где гравитация юмора сильнее всего. Мы собираем самые редкие мемы со всей Вселенной и доставляем их прямо в ваш Telegram!</p>
-            <p><strong>Почему стоит подписаться?</strong></p>
-            <ul>
-                <li>Межзвездные мемы каждый день</li>
-                <li>Юмор, который расширяет границы сознания</li>
-                <li>Сообщество исследователей смеха</li>
-                <li>Возможность стать космонавтом юмора</li>
-            </ul>
-        </section>
-
-        <section id="latest-posts">
-            <h2>Артефакты смеха из глубин космоса</h2>
-            <div class="post-grid">
-
-                <!-- Пример поста 1 -->
-                <div class="post">
-                    <img src="https://i.imgur.com/swdheYs.jpeg" alt="Мем 1">
-                    <h3>Мем 1: Когда забыл выключить темную тему в космосе</h3>
-                    <p>Описание: Даже в космосе темная тема — это святое...</p>
-                    <a href="https://t.me/maktrahher228/123" class="button" target="_blank">Увидеть в Telegram</a>
-                </div>
-
-                <!-- Пример поста 2 -->
-                <div class="post">
-                    <img src="https://i.pinimg.com/originals/04/6e/5f/046e5ff096cb01638555c63ee916873f.jpg" alt="Мем 2">
-                    <h3>М 2: в в в в в в черной дыре</h3>
-                    <p>Описание: Время летит незаметно, когда прокрастинируешь в черной дыре...</p>
-                    <a href="https://t.me/maktrahher228/124" class="button" target="_blank">Увидеть в Telegram</a>
-                </div>
-
-                <!-- Пример поста 3 -->
-                <div class="post">
-                    <img src="https://avatars.mds.yandex.net/i?id=ed1026c8a803e3f39fed6656f285f1e5_l-4576178-images-thumbs&n=13" alt="Мем 3">
-                    <h3>Мем 3: ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯 ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯  ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯</h3>
-                    <p>Описание: Отладка кода на космической станции — это вам не шутки...</p>
-                    <a href="https://t.me/maktrahher228/125" class="button" target="_blank">Увидеть в Telegram</a>
-                </div>
-
-            </div>
-        </section>
-
-        <section id="contact">
-            <h2>Связаться с хранителем космического юмора</h2>
-            <p>По вопросам межгалактического сотрудничества пишите: <a href="mailto: ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ⃝ᡃ𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯𑲯 𑲯@example.com">your_email@example.com</a></p>
-            <p>Подписывайтесь на мой Telegram: <a href="https://t.me/maktrahher228" target="_blank">@maktrahher228</a></p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2023 MAKTRAHHER228. Все права защищены.</p>
-        <p>Сделано с любовью и космическим безумием.</p>
-    </footer>
-
-
     <script>
-        const body = document.body;
-        const loadingScreen = document.getElementById('loading-screen');
+        let videos = [
+            { title: "Пример видео 1", src: "https://www.w3schools.com/html/mov_bbb.mp4" },
+            { title: "Пример видео 2", src: "https://www.w3schools.com/html/mov_bbb.mp4" }
+        ];
 
-        function toggleBlink() {
-            body.classList.toggle('blink');
+        // Загрузка видео на главную страницу
+        function loadVideos(searchQuery = '') {
+            const videoGrid = document.getElementById('videoGrid');
+            videoGrid.innerHTML = '';
+            videos
+                .filter(video => video.title.toLowerCase().includes(searchQuery.toLowerCase()))
+                .forEach(video => {
+                    const videoCard = document.createElement('div');
+                    videoCard.className = 'video-card';
+                    videoCard.innerHTML = `
+                        <video src="${video.src}"></video>
+                        <h3>${video.title}</h3>
+                    `;
+                    videoCard.onclick = () => showVideo(video);
+                    videoGrid.appendChild(videoCard);
+                });
         }
 
-        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']; // Цвета для фона
-
-        function changeBackgroundColor() {
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            body.style.backgroundColor = randomColor;
+        // Показать страницу видео
+        function showVideo(video) {
+            document.querySelector('.main-page').style.display = 'none';
+            const videoPage = document.getElementById('videoPage');
+            videoPage.style.display = 'block';
+            document.getElementById('currentVideo').src = video.src;
+            document.getElementById('videoTitleDisplay').textContent = video.title;
+            loadComments();
         }
 
-        // Функция для случайного появления фона
-        function randomBackgroundColorChange() {
-            if (Math.random() < 0.2) { // 20% вероятность изменения цвета
-                changeBackgroundColor();
-                setTimeout(() => {
-                    body.style.backgroundColor = 'radial-gradient(circle, #201030, #100818)'; // Возвращаем исходный фон
-                }, 300); // Возвращаем исходный фон через 0.3 секунды
+        // Показать главную страницу
+        function showMainPage() {
+            document.getElementById('videoPage').style.display = 'none';
+            document.getElementById('uploadSection').style.display = 'none';
+            document.querySelector('.main-page').style.display = 'block';
+            loadVideos();
+        }
+
+        // Показать раздел загрузки
+        function showUploadSection() {
+            document.getElementById('videoPage').style.display = 'none';
+            document.querySelector('.main-page').style.display = 'block';
+            document.getElementById('uploadSection').style.display = 'block';
+        }
+
+        // Имитация загрузки видео
+        function uploadVideo() {
+            const fileInput = document.getElementById('videoUpload');
+            const titleInput = document.getElementById('videoTitle').value;
+            if (fileInput.files.length > 0 && titleInput) {
+                // В реальном приложении здесь будет загрузка на сервер
+                const file = fileInput.files[0];
+                const videoURL = URL.createObjectURL(file);
+                videos.push({ title: titleInput, src: videoURL });
+                alert('Видео загружено! (Имитация)');
+                showMainPage();
+            } else {
+                alert('Выберите файл и укажите название!');
             }
         }
 
-        // Запускаем моргание каждые 5 секунд
-        setInterval(() => {
-            toggleBlink();
-            setTimeout(toggleBlink, 100); // Выключаем моргание через 100мс
-        }, 5000);
-
-        // Запускаем изменение цвета фона
-        setInterval(randomBackgroundColorChange, 100); // Проверяем каждые 0.1 секунды
-
-        // Функция для исчезновения экрана загрузки
-        function fadeOutLoadingScreen() {
-            let opacity = 1;
-            const intervalId = setInterval(function() {
-                if (opacity > 0) {
-                    opacity -= 0.05; // Уменьшаем прозрачность
-                    loadingScreen.style.opacity = opacity;
-                } else {
-                    clearInterval(intervalId); // Останавливаем интервал
-                    loadingScreen.style.display = 'none'; // Скрываем элемент
-                }
-            }, 20); // Интервал обновления - 20 мс
+        // Подписка
+        function subscribe() {
+            alert('Вы подписались на канал! (Имитация)');
+            // В реальном приложении здесь будет запрос к серверу
         }
-        window.addEventListener('load', () => {
-            setTimeout(fadeOutLoadingScreen, 2000); // Задержка в 2 секунды перед исчезновением
+
+        // Добавление комментария
+        function addComment() {
+            const commentInput = document.getElementById('commentInput').value;
+            if (commentInput) {
+                const comments = JSON.parse(localStorage.getItem('comments') || '{}');
+                const videoTitle = document.getElementById('videoTitleDisplay').textContent;
+                if (!comments[videoTitle]) comments[videoTitle] = [];
+                comments[videoTitle].push(commentInput);
+                localStorage.setItem('comments', JSON.stringify(comments));
+                document.getElementById('commentInput').value = '';
+                loadComments();
+            }
+        }
+
+        // Загрузка комментариев
+        function loadComments() {
+            const videoTitle = document.getElementById('videoTitleDisplay').textContent;
+            const comments = JSON.parse(localStorage.getItem('comments') || '{}');
+            const commentList = document.getElementById('commentList');
+            commentList.innerHTML = '';
+            (comments[videoTitle] || []).forEach(comment => {
+                const p = document.createElement('p');
+                p.textContent = comment;
+                commentList.appendChild(p);
+            });
+        }
+
+        // Поиск
+        document.getElementById('searchBar').addEventListener('input', (e) => {
+            loadVideos(e.target.value);
         });
 
+        // Инициализация
+        loadVideos();
     </script>
-
 </body>
 </html>
